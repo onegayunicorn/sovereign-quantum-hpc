@@ -1,0 +1,23 @@
+{
+  "schema": "UACM-Sovereign-Integration",
+  "total_entries": 5,
+  "latest_proof": "dac7369e3d06b810",
+  "entries": [
+    {
+      "sequence": 1,
+      "timestamp_utc": "2026-09-27T12:26:58Z",
+      "source_module": "EPTT",
+      "action": "pressure_reading",
+      "payload": {
+        "magnitude_psi": 1.56,
+        "latency_ms": 2700,
+        "resonance": 0.7591,
+        "breath_hold_ratio": 0.68,
+        "mood_chroma_hex": "#768844"
+      },
+      "previous_hash": "GENESIS",
+      "proof_hash": "PLACEHOLDER_SEE_LOCAL_RUN"
+    }
+  ],
+  "note": "Regenerate with: python3 run_integration.py — this sample is illustrative; local runs produce full hash chain."
+}
