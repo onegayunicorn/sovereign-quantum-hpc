@@ -1,6 +1,7 @@
 #!/usr/bin/env python3
 """
 run_rick.py — COUNCIL → GENESIS → C-137 VOICE → SEAL
+Uses SovereignBPE for deterministic text → int64 tokens.
 """
 
 from __future__ import annotations
@@ -12,9 +13,12 @@ import numpy as np
 
 sys.path.insert(0, str(Path(__file__).parent))
 
+from integration.bpe_tokenizer import tokenizer
+
 
 def text_to_tokens(text: str) -> np.ndarray:
-    return np.array([ord(c) % 256 for c in text], dtype=np.int64)
+    """Sovereign BPE encoding → int64 array for ONNX."""
+    return np.array(tokenizer.encode(text), dtype=np.int64)
 
 
 def main() -> int:
@@ -58,6 +62,7 @@ def main() -> int:
 
     print("\n[4/5] ONNX / Simulated Synthesis...")
     tokens = text_to_tokens(spoken)
+    print(f"  Tokens (head): {tokens[:8].tolist()}... len={len(tokens)}")
     mel = rick.synthesize(tokens, persona_vec)
     mode = "ONNX live" if rick.session else "simulated"
     print(f"  Mel shape: {mel.shape} — {mode}")
@@ -72,9 +77,11 @@ def main() -> int:
             "tier": "INFINITY" if s.tier == float("inf") else s.tier,
             "spoken_text": spoken,
             "synthesis_mode": rick.phase,
+            "token_count": int(tokens.size),
             "mel_bands": int(mel.shape[0]) if mel.ndim > 0 else 0,
             "mel_frames": int(mel.shape[1]) if mel.ndim > 1 else int(mel.size),
             "persona_anchor": "7.83Hz-phi",
+            "tokenizer": "SovereignBPE",
         },
     )
     print(f"  Proof: {proof}")
