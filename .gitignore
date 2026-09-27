@@ -1,0 +1,6 @@
+models/*.onnx
+models/*.onnx.data
+__pycache__/
+*.pyc
+.pytest_cache/
+integration_digest.json
